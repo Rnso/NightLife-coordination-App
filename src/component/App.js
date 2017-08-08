@@ -23,13 +23,6 @@ class App extends Component {
         this.handleCheckIn = this.handleCheckIn.bind(this)
         this.handleCheckOut = this.handleCheckOut.bind(this)
     }
-    /*componentDidMount() {
-        gapi.load('auth2', () => {
-            gapi.auth2.init({
-                client_id: CLIENT_ID
-            })
-        })
-    }*/
     searchPlaces() {
         let address = this.refs.search.value
         axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY_GEOCODE}`)
@@ -64,6 +57,11 @@ class App extends Component {
         $('#myModal').modal('show')
     }
     logInWithGoogle() {
+        gapi.load('auth2', () => {
+            gapi.auth2.init({
+                client_id: CLIENT_ID
+            })
+        })
         let GoogleAuth = gapi.auth2.getAuthInstance()
         GoogleAuth.signIn()
             .then(GoogleUser => {
@@ -157,7 +155,7 @@ class App extends Component {
                         </h4>
                     </div>
                 </div> : ''}
-                <div style={{ background: `url(${blur}) no-repeat center fixed` , clear: 'both'}}>
+                <div style={{ background: `url(${blur}) no-repeat center fixed`, clear: 'both' }}>
                     <h1 className='text'>Locate and checkIn your hangout places for the night</h1>
                     <div className='icons'>
                         <i className="fa fa-map-marker"></i>&nbsp;<i className="fa fa-car"></i>&nbsp;<i className="fa fa-glass"></i>&nbsp;<i className="fa fa-cutlery"></i>
@@ -178,7 +176,7 @@ class App extends Component {
                                     return <div key={i} className='col-md-12'><br />
                                         <div className='col-md-2 col-md-offset-1'>
                                             {place.photos ? <div>
-                                                {place.photos.map((photo,j) => {
+                                                {place.photos.map((photo, j) => {
                                                     return <img key={j} className='image' src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=180&maxheight=150&photoreference=${photo['photo_reference']}&key=${API_KEY_PLACE}`} alt={place.name} width='180' height='150' />
                                                 })}
                                             </div> : ''}
@@ -202,7 +200,7 @@ class App extends Component {
                                 })}
                             </div> : ''}
                         </div>
-                    </div><br/>
+                    </div><br />
                 </div>
                 <div id="myModal" className="modal fade" role="dialog">
                     <div className="modal-dialog">
