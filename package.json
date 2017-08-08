@@ -1,10 +1,10 @@
 {
-  "name": "votingapp",
+  "name": "nightlife",
   "version": "1.0.0",
-  "description": "Voting App",
+  "description": "NightLife Cordination App",
   "main": "server.js",
   "scripts": {
-    "start": "babel-node server.js",
+    "start": "node server.js",
     "dev": "webpack-dev-server --inline --hot",
     "prod": "webpack -wd"
   },
