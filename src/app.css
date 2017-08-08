@@ -1,0 +1,36 @@
+
+
+.text{
+    color : black;
+}
+.icons{
+    color: black;
+    font-size: 30px;
+}
+.profile{
+    float: right;
+    color: #5cb85c;
+}
+.place_holder{
+    background-color: black;
+}
+.search{
+    height: 45px;
+    font-size: 25px;
+    color: dodgerblue;
+}
+.ul{
+    list-style-type: none;
+    color: white
+}
+.google{
+    color: orangered;
+}
+.google_btn{
+    border: 1px solid dodgerblue;
+}
+.image{
+    border: 2px solid white;
+    border-radius: 3px;
+}
+
