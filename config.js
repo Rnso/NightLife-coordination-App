@@ -7,8 +7,8 @@ export const CLIENT_ID = '687248084198-an500k40vequ770s5tccbtaa1nsmgnbo.apps.goo
 
 
 export default{
-    //mongodbUri: 'mongodb://rnso:pongen@ds159892.mlab.com:59892/fcc',
-    mongodbUri: 'mongodb://localhost:27017/nightLife',
+    mongodbUri: 'mongodb://rnso:pongen@ds159892.mlab.com:59892/fcc',
+    //mongodbUri: 'mongodb://localhost:27017/nightLife',
     port: env.PORT || 9000,
     host: env.HOST || '0.0.0.0'
 }
