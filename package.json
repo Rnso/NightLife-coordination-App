@@ -4,7 +4,7 @@
   "description": "Voting App",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon --exec babel-node server.js --ignore public/",
+    "start": "babel-node server.js ",
     "dev": "webpack-dev-server --inline --hot",
     "prod": "webpack -wd"
   },
