@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Redirect, Link } from 'react-router-dom'
 import * as constants from '../../constant.js'
 import { API_KEY_GEOCODE, API_KEY_PLACE, CLIENT_ID } from '../../config.js'
 import axios from 'axios'
@@ -24,13 +23,13 @@ class App extends Component {
         this.handleCheckIn = this.handleCheckIn.bind(this)
         this.handleCheckOut = this.handleCheckOut.bind(this)
     }
-    componentDidMount() {
+    /*componentDidMount() {
         gapi.load('auth2', () => {
             gapi.auth2.init({
                 client_id: CLIENT_ID
             })
         })
-    }
+    }*/
     searchPlaces() {
         let address = this.refs.search.value
         axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY_GEOCODE}`)
