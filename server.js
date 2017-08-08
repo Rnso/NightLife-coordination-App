@@ -9,7 +9,7 @@ const server = express()
 
 server.use(bodyParser.json() )
 server.use('/api', router)
-//server.use(express.static('dist'))
+server.use(express.static('dist'))
 
 
 server.listen(config.port, () => {
