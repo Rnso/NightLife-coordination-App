@@ -32,6 +32,7 @@ class App extends Component {
         })
     }
     searchPlaces() {
+        this.more_places = []
         let address = this.refs.search.value
         axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY_GEOCODE}`)
             .then(res => {
@@ -220,7 +221,7 @@ class App extends Component {
                                     </div>
                                 })}
                                 <div className='text-center'>
-                                    {this.state.showmore ? <button id='more_btn' className='btn btn-primary'>More...</button> : ''}
+                                    {this.state.showmore ? <button id='more_btn' className='btn btn-warning btn-block'>More...</button> : ''}
                                 </div>
                             </div> : ''}
                         </div>
