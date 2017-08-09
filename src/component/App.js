@@ -214,7 +214,7 @@ class App extends Component {
                                                         }
                                                         &nbsp;&nbsp;&nbsp;<button className='btn btn-primary' >Total checkedIn:&nbsp;{this.state[place.id]} </button>
                                                     </li> :
-                                                    <li><button className="btn btn-primary">Check-In</button></li>
+                                                    <li><button className="btn btn-primary" onClick={this.showLoginModal}>Check-In</button></li>
                                                 }
                                             </ul><hr />
                                         </div>
