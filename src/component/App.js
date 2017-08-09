@@ -12,6 +12,7 @@ class App extends Component {
         this.state.location = ''
         this.more_places = []
         this.state.placedetails = []
+        this.state.isnotfound = false
         this.state.showplaces = false
         this.state.isloggedin = false
         this.state.showmore = false
@@ -50,6 +51,12 @@ class App extends Component {
             radius: 1000,
             type: ['restaurant']
         }, (res, status, pagination) => {
+            if (status === 'ZERO_RESULTS') {
+                this.setState({ isnotfound: true })
+            }
+            else {
+                this.setState({ isnotfound: false })
+            }
             if (status === 'OK') {
                 res.map(place => {
                     let obj = {}
@@ -195,7 +202,8 @@ class App extends Component {
                             <div className="input-group-btn">
                                 <button className="btn btn-primary btn-lg" onClick={this.searchPlaces}><i className="fa fa-search"></i></button>
                             </div>
-                        </div>
+                        </div ><br/>
+                        {this.state.isnotfound ? <div className='no_result'> No Results found</div> : ''}
                         <div>
                             {this.state.showplaces ? <div>
                                 {this.state.placedetails.map((place, i) => {

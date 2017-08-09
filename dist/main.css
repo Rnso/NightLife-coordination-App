@@ -11,6 +11,10 @@
     float: right;
     color: #5cb85c;
 }
+.no_result{
+    font-size: 25px;
+    color: white;
+}
 .place_holder{
     background-color: black;
 }
