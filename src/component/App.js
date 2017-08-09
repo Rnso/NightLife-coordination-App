@@ -10,9 +10,11 @@ class App extends Component {
         this.state = { showprofile: false }
         this.state.username = ''
         this.state.location = ''
+        this.more_places = []
         this.state.placedetails = []
         this.state.showplaces = false
         this.state.isloggedin = false
+        this.state.showmore = false
         this.searchPlaces = this.searchPlaces.bind(this)
         this.getPlaces = this.getPlaces.bind(this)
         this.showLoginModal = this.showLoginModal.bind(this)
@@ -44,10 +46,9 @@ class App extends Component {
         var service = new google.maps.places.PlacesService(map)
         service.nearbySearch({
             location: loc,
-            radius: 500,
+            radius: 1000,
             type: ['restaurant']
-        }, (res, status) => {
-            let arr = []
+        }, (res, status, pagination) => {
             if (status === 'OK') {
                 res.map(place => {
                     let obj = {}
@@ -60,9 +61,9 @@ class App extends Component {
                             obj.photo = photo.getUrl({ 'maxWidth': 180, 'maxHeight': 150 })
                         })
                     }
-                    arr.push(obj)
+                    this.more_places.push(obj)
                 })
-                this.setState({ placedetails: arr })
+                this.setState({ placedetails: this.more_places })
                 let checkins = {}
                 let checked = {}
                 this.state.placedetails.map(place => {
@@ -72,6 +73,14 @@ class App extends Component {
                 this.setState(checkins)
                 this.setState(checked)
                 this.setState({ showplaces: true })
+            }
+            if (pagination.hasNextPage) {
+                this.setState({ showmore: true })
+                let el = document.getElementById('more_btn')
+                el.addEventListener('click', () => {
+                    pagination.nextPage()
+                    this.setState({ showmore: false })
+                })
             }
         })
     }
@@ -204,12 +213,15 @@ class App extends Component {
                                                         }
                                                         &nbsp;&nbsp;&nbsp;<button className='btn btn-primary' >Total checkedIn:&nbsp;{this.state[place.id]} </button>
                                                     </li> :
-                                                    <li><button className="btn btn-primary" onClick={this.showLoginModal}>Check-In</button></li>
+                                                    <li><button className="btn btn-primary">Check-In</button></li>
                                                 }
                                             </ul><hr />
                                         </div>
                                     </div>
                                 })}
+                                <div className='text-center'>
+                                    {this.state.showmore ? <button id='more_btn' className='btn btn-primary'>More...</button> : ''}
+                                </div>
                             </div> : ''}
                         </div>
                     </div><br />
