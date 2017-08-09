@@ -3,7 +3,6 @@ import * as constants from '../../constant.js'
 import { API_KEY_GEOCODE, API_KEY_PLACE, CLIENT_ID } from '../../config.js'
 import axios from 'axios'
 import '../app.css'
-import blur from '../img/hangout.jpg'
 
 class App extends Component {
     constructor() {
@@ -34,19 +33,36 @@ class App extends Component {
         let address = this.refs.search.value
         axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY_GEOCODE}`)
             .then(res => {
-                //console.log(res)
                 this.state.location = res.data.results[0].geometry.location
                 this.getPlaces()
             })
             .catch(console.error)
     }
     getPlaces() {
-        let lat = this.state.location.lat
-        let lon = this.state.location.lng
-        let radius = 1000
-        axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lon}&radius=${radius}&type=restaurant&key=${API_KEY_PLACE}`)
-            .then(res => {
-                this.setState({ placedetails: res.data.results.sort() })
+        let loc = this.state.location
+        let map = new google.maps.Map(document.createElement('div'))
+        var service = new google.maps.places.PlacesService(map)
+        service.nearbySearch({
+            location: loc,
+            radius: 500,
+            type: ['restaurant']
+        }, (res, status) => {
+            let arr = []
+            if (status === 'OK') {
+                res.map(place => {
+                    let obj = {}
+                    obj.id = place.id
+                    obj.name = place.name
+                    obj.rating = place.rating
+                    obj.vicinity = place.vicinity
+                    if (place.photos) {
+                        place.photos.map(photo => {
+                            obj.photo = photo.getUrl({ 'maxWidth': 180, 'maxHeight': 150 })
+                        })
+                    }
+                    arr.push(obj)
+                })
+                this.setState({ placedetails: arr })
                 let checkins = {}
                 let checked = {}
                 this.state.placedetails.map(place => {
@@ -56,8 +72,8 @@ class App extends Component {
                 this.setState(checkins)
                 this.setState(checked)
                 this.setState({ showplaces: true })
-            })
-            .catch(console.error)
+            }
+        })
     }
     showLoginModal() {
         $('#myModal').modal('show')
@@ -69,7 +85,6 @@ class App extends Component {
                 this.changeProfile(GoogleUser)
                 axios.get(constants.serverUrl + `/api/getallhangouts/${this.state.username}`)
                     .then(res => {
-                        //console.log(res)
                         if (res.data.length > 0) {
                             res.data.map(item => {
                                 let checkins = {}
@@ -156,7 +171,7 @@ class App extends Component {
                         </h4>
                     </div>
                 </div> : ''}
-                <div style={{ background: `url(${blur}) no-repeat center fixed`, clear: 'both' }}>
+                <div style={{ clear: 'both' }}>
                     <h1 className='text'>Locate and checkIn your hangout places for the night</h1>
                     <div className='icons'>
                         <i className="fa fa-map-marker"></i>&nbsp;<i className="fa fa-car"></i>&nbsp;<i className="fa fa-glass"></i>&nbsp;<i className="fa fa-cutlery"></i>
@@ -176,11 +191,7 @@ class App extends Component {
                                 {this.state.placedetails.map((place, i) => {
                                     return <div key={i} className='col-md-12'><br />
                                         <div className='col-md-2 col-md-offset-1'>
-                                            {place.photos ? <div>
-                                                {place.photos.map((photo, j) => {
-                                                    return <img key={j} className='image' src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=180&maxheight=150&photoreference=${photo['photo_reference']}&key=${API_KEY_PLACE}`} alt={place.name} width='180' height='150' />
-                                                })}
-                                            </div> : ''}
+                                            <img className='image' src={place.photo} alt={place.name} width='180' height='150' />
                                         </div>
                                         <div className='col-md-8'>
                                             <ul className='ul'><h3>{place.name}</h3>
