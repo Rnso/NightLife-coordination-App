@@ -30,7 +30,7 @@ class App extends Component {
     }
     searchPlaces() {
         this.more_places = []
-        if (sessionStorage.searchInput == 'undefined') sessionStorage.searchInput = ""
+        if (typeof sessionStorage["searchInput"] == "undefined") sessionStorage.searchInput = ""
         this.refs.search.value = this.refs.search.value || sessionStorage.searchInput
         let address = this.refs.search.value || sessionStorage.searchInput
         sessionStorage.searchInput = address
