@@ -16,7 +16,17 @@
   </div>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
+  <script>
+    window.onLoadCallback = function () {
+       gapi.load('auth2', () => {
+            gapi.auth2.init({
+                client_id: '687248084198-an500k40vequ770s5tccbtaa1nsmgnbo.apps.googleusercontent.com'
+            })
+        })
+    }
+
+  </script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdMpshfj7xG_fcr6l3ph19KiHGE1_LVT0&libraries=places"></script>
 <script type="text/javascript" src="index.bundle.js"></script></body>
 

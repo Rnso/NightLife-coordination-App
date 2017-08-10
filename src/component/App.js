@@ -7,14 +7,14 @@ import '../app.css'
 class App extends Component {
     constructor() {
         super()
-        this.state = { showprofile: false }
-        this.state.username = ''
+        this.state = {}
+        this.state.username = (typeof localStorage["name"] != "undefined") ? localStorage.name : ''
         this.state.location = ''
         this.more_places = []
         this.state.placedetails = []
         this.state.isnotfound = false
-        this.state.showplaces = false
-        this.state.isloggedin = false
+        this.state.showplaces = (typeof localStorage["active"] != "undefined") ? JSON.parse(localStorage.active) : false
+        this.state.isloggedin = (typeof localStorage["active"] != "undefined") ? JSON.parse(localStorage.active) : false
         this.state.showmore = false
         this.searchPlaces = this.searchPlaces.bind(this)
         this.getPlaces = this.getPlaces.bind(this)
@@ -26,21 +26,22 @@ class App extends Component {
         this.handleCheckOut = this.handleCheckOut.bind(this)
     }
     componentDidMount() {
-        gapi.load('auth2', () => {
-            gapi.auth2.init({
-                client_id: CLIENT_ID
-            })
-        })
+        this.searchPlaces()
     }
     searchPlaces() {
         this.more_places = []
-        let address = this.refs.search.value
-        axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY_GEOCODE}`)
-            .then(res => {
-                this.state.location = res.data.results[0].geometry.location
-                this.getPlaces()
-            })
-            .catch(console.error)
+        if (sessionStorage.searchInput == 'undefined') sessionStorage.searchInput = ""
+        this.refs.search.value = this.refs.search.value || sessionStorage.searchInput
+        let address = this.refs.search.value || sessionStorage.searchInput
+        sessionStorage.searchInput = address
+        if (address !== "") {
+            axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY_GEOCODE}`)
+                .then(res => {
+                    this.state.location = res.data.results[0].geometry.location
+                    this.getPlaces()
+                })
+                .catch(console.error)
+        }
     }
     getPlaces() {
         let loc = this.state.location
@@ -133,12 +134,16 @@ class App extends Component {
         if (GoogleUser) {
             var profile = GoogleUser.getBasicProfile()
             this.setState({ username: profile.getName() })
-            this.setState({ showprofile: true })
+            // this.setState({ showprofile: true })
             this.setState({ isloggedin: true })
+            localStorage.active = true
+            localStorage.name = this.state.username
             $('#myModal').modal('hide')
         }
         else {
-            this.setState({ showprofile: false })
+            localStorage.active = false
+            localStorage.name = ''
+            // this.setState({ showprofile: false })
             this.setState({ isloggedin: false })
         }
     }
@@ -180,7 +185,7 @@ class App extends Component {
     render() {
         return (
             <div className='text-center'>
-                {this.state.showprofile ? <div>
+                {this.state.isloggedin ? <div>
                     <div className='profile'>
                         <h4>
                             <span>Hello&nbsp;{this.state.username}</span>&nbsp;&nbsp;&nbsp;
@@ -202,7 +207,7 @@ class App extends Component {
                             <div className="input-group-btn">
                                 <button className="btn btn-primary btn-lg" onClick={this.searchPlaces}><i className="fa fa-search"></i></button>
                             </div>
-                        </div ><br/>
+                        </div ><br />
                         {this.state.isnotfound ? <div className='no_result'> No Results found</div> : ''}
                         <div>
                             {this.state.showplaces ? <div>
