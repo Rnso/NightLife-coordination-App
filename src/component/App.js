@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import * as constants from '../../constant.js'
-import { API_KEY_GEOCODE, API_KEY_PLACE, CLIENT_ID } from '../../config.js'
+import { API_KEY_GEOCODE, API_KEY_PLACE } from '../../config.js'
 import axios from 'axios'
 import '../app.css'
 
