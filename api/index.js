@@ -36,7 +36,7 @@ router.post('/checkin', (req, res) => {
     obj.createdDate = date
     mdb.collection("hangouts").findOne({ user: req.body.user, id: req.body.id }).then(result1 => {
         if (result1) {
-            mdb.collection("hangouts").update({ user: req.body.user, id: req.body.id }, { $set: { createdDate: createdDate } }).then(result2 => {
+            mdb.collection("hangouts").update({ user: req.body.user, id: req.body.id }, { $set: { createdDate: date } }).then(result2 => {
                 mdb.collection("hangouts").find({ id: req.body.id, createdDate: date }).toArray((err, total) => {
                     res.send(total)
                 })
