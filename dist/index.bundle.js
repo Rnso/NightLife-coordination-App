@@ -1080,7 +1080,7 @@ eval("/**\n * Copyright 2013-present, Facebook, Inc.\n * All rights reserved.\n 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nvar serverUrl = exports.serverUrl = 'https://nightlife-cordination.herokuapp.com';\n//export const serverUrl = 'http://localhost:9000'//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiODQuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vY29uc3RhbnQuanM/ZjdmNSJdLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgY29uc3Qgc2VydmVyVXJsID0gJ2h0dHBzOi8vbmlnaHRsaWZlLWNvcmRpbmF0aW9uLmhlcm9rdWFwcC5jb20nXG4vL2V4cG9ydCBjb25zdCBzZXJ2ZXJVcmwgPSAnaHR0cDovL2xvY2FsaG9zdDo5MDAwJ1xuXG5cblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gY29uc3RhbnQuanMiXSwibWFwcGluZ3MiOiI7Ozs7O0FBQUE7QUFDQSIsInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///84\n");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nvar serverUrl = exports.serverUrl = 'https://nightlife-cordination.herokuapp.com';\n//export const serverUrl = 'http://localhost:8080'//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiODQuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vY29uc3RhbnQuanM/ZjdmNSJdLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgY29uc3Qgc2VydmVyVXJsID0gJ2h0dHBzOi8vbmlnaHRsaWZlLWNvcmRpbmF0aW9uLmhlcm9rdWFwcC5jb20nXG4vL2V4cG9ydCBjb25zdCBzZXJ2ZXJVcmwgPSAnaHR0cDovL2xvY2FsaG9zdDo4MDgwJ1xuXG5cblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gY29uc3RhbnQuanMiXSwibWFwcGluZ3MiOiI7Ozs7O0FBQUE7QUFDQSIsInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///84\n");
 
 /***/ }),
 /* 85 */

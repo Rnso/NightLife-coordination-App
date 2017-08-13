@@ -29,7 +29,6 @@ router.get('/getallcheckin/:id', (req, res) => {
 })
 
 router.post('/checkin', (req, res) => {
-    console.log(req.body)
     let date = moment().format('L')
     let obj = {}
     obj.user = req.body.user
