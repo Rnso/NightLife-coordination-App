@@ -12,9 +12,18 @@ MongoClient.connect(config.mongodbUri, (err, db) => {
 })
 const router = express.Router()
 
-router.get('/getallhangouts/:user', (req, res) => {
+/*router.get('/getallhangouts', (req, res) => {
     let date = moment().format('L')
-    mdb.collection("hangouts").find({ user: req.params.user, createdDate: date }).toArray((err, data) => {
+    mdb.collection("hangouts").find({ createdDate: date }).toArray((err, data) => {
+        res.send(data)
+        console.log(data)
+    })
+
+})*/
+
+router.get('/getallhangouts', (req, res) => {
+    let date = moment().format('L')
+    mdb.collection("hangouts").find({createdDate: date }).toArray((err, data) => {
         res.send(data)
     })
 
@@ -56,9 +65,12 @@ router.post('/checkin', (req, res) => {
 
 router.post('/checkout', (req, res) => {
     let date = moment().format('L')
+    console.log(req.body.id)
     mdb.collection("hangouts").remove({ user: req.body.user, id: req.body.id }).then(result => {
+        //console.log(result)
         mdb.collection("hangouts").find({ id: req.body.id, createdDate: date }).toArray((err, data) => {
             res.send(data)
+            console.log(data)
         })
     })
 

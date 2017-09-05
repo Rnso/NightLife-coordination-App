@@ -1,6 +1,6 @@
 const env = process.env
 
-export const nodeEnv = env.NODE_ENV || 'development'
+//export const nodeEnv = env.NODE_ENV || 'development'
 
 export const API_KEY_PLACE = 'AIzaSyBdMpshfj7xG_fcr6l3ph19KiHGE1_LVT0'
 export const API_KEY_GEOCODE = 'AIzaSyDj4oDbphHS81GkioQqzVC43Et039KvFGQ'

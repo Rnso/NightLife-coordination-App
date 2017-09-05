@@ -8,13 +8,13 @@ class App extends Component {
     constructor() {
         super()
         this.state = {}
-        this.state.username = (typeof localStorage["name"] != "undefined") ? localStorage.name : ''
+        this.state.username = (typeof sessionStorage["name"] != "undefined") ? sessionStorage.name : ''
         this.state.location = ''
         this.more_places = []
-        this.state.placedetails = []
+        this.state.placedetails = (typeof sessionStorage["places"] != "undefined") ? JSON.parse(sessionStorage.places) : []
         this.state.isnotfound = false
-        this.state.showplaces = (typeof localStorage["active"] != "undefined") ? JSON.parse(localStorage.active) : false
-        this.state.isloggedin = (typeof localStorage["active"] != "undefined") ? JSON.parse(localStorage.active) : false
+        this.state.showplaces = (typeof sessionStorage["active"] != "undefined") ? JSON.parse(sessionStorage.active) : false
+        this.state.isloggedin = (typeof sessionStorage["active"] != "undefined") ? JSON.parse(sessionStorage.active) : false
         this.state.showmore = false
         this.searchPlaces = this.searchPlaces.bind(this)
         this.getPlaces = this.getPlaces.bind(this)
@@ -24,11 +24,15 @@ class App extends Component {
         this.logoutWithGoogle = this.logoutWithGoogle.bind(this)
         this.handleCheckIn = this.handleCheckIn.bind(this)
         this.handleCheckOut = this.handleCheckOut.bind(this)
+        this.getCheckedinDetails = this.getCheckedinDetails.bind(this)
+        //this.searchPlaces()
     }
     componentDidMount() {
-        this.searchPlaces()
+        if (this.state.username)
+            this.getCheckedinDetails()
     }
-    searchPlaces() {
+    searchPlaces(e) {
+        e.preventDefault()
         this.more_places = []
         if (typeof sessionStorage["searchInput"] == "undefined") sessionStorage.searchInput = ""
         this.refs.search.value = this.refs.search.value || sessionStorage.searchInput
@@ -73,6 +77,7 @@ class App extends Component {
                     this.more_places.push(obj)
                 })
                 this.setState({ placedetails: this.more_places })
+                sessionStorage.places = JSON.stringify(this.state.placedetails)
                 let checkins = {}
                 let checked = {}
                 this.state.placedetails.map(place => {
@@ -101,51 +106,55 @@ class App extends Component {
         GoogleAuth.signIn()
             .then(GoogleUser => {
                 this.changeProfile(GoogleUser)
-                axios.get(constants.serverUrl + `/api/getallhangouts/${this.state.username}`)
-                    .then(res => {
-                        if (res.data.length > 0) {
-                            res.data.map(item => {
-                                let checkins = {}
-                                let checked = {}
-                                this.state.placedetails.forEach((place, i) => {
-                                    if (item.id === place.id) {
-                                        axios.get(constants.serverUrl + `/api/getallcheckin/${item.id}`)
-                                            .then(response => {
-                                                checkins[place.id] = response.data.length
-                                                checked[`checkedin${place.id}`] = true
-                                                this.setState(checkins)
-                                                this.setState(checked)
-                                            })
-                                    }
-                                    else {
-                                        checkins[place.id] = 0
-                                        checked[`checkedin${place.id}`] = false
-                                        this.setState(checkins)
-                                        this.setState(checked)
-                                    }
-                                })
-                            })
-                        }
-                    })
-                    .catch(console.error)
+                this.getCheckedinDetails()
+
             })
     }
     changeProfile(GoogleUser) {
         if (GoogleUser) {
             var profile = GoogleUser.getBasicProfile()
             this.setState({ username: profile.getName() })
-            // this.setState({ showprofile: true })
             this.setState({ isloggedin: true })
-            localStorage.active = true
-            localStorage.name = this.state.username
+            sessionStorage.active = true
+            sessionStorage.name = this.state.username
             $('#myModal').modal('hide')
         }
         else {
-            localStorage.active = false
-            localStorage.name = ''
-            // this.setState({ showprofile: false })
+            sessionStorage.active = false
+            sessionStorage.name = ''
+            sessionStorage.searchInput = ''
+            sessionStorage.places = []
             this.setState({ isloggedin: false })
         }
+    }
+    getCheckedinDetails() {
+        axios.get(constants.serverUrl + `/api/getallhangouts`)
+            .then(res => {
+                if (res.data.length > 0) {
+                    res.data.map(item => {
+                        let checkins = {}
+                        let checked = {}
+                        this.state.placedetails.forEach((place, i) => {
+                            if (item.id === place.id) {
+                                axios.get(constants.serverUrl + `/api/getallcheckin/${item.id}`)
+                                    .then(response => {
+                                        if (item.user == this.state.username) {
+                                            checkins[place.id] = response.data.length
+                                            checked[`checkedin${place.id}`] = true
+                                            this.setState(checkins)
+                                            this.setState(checked)
+                                        }
+                                        else {
+                                            checkins[place.id] = response.data.length
+                                            this.setState(checkins)
+                                        }
+                                    })
+                            }
+                        })
+                    })
+                }
+            })
+            .catch(console.error)
     }
     logoutWithGoogle() {
         var GoogleAuth = gapi.auth2.getAuthInstance()
@@ -202,12 +211,14 @@ class App extends Component {
                 <div className='place_holder'>
                     <div className='container place_holder'>
                         <br />
-                        <div className="input-group">
-                            <input type="text" className="form-control search" placeholder="Enter any country or city" ref="search" />
-                            <div className="input-group-btn">
-                                <button className="btn btn-primary btn-lg" onClick={this.searchPlaces}><i className="fa fa-search"></i></button>
-                            </div>
-                        </div ><br />
+                        <form onSubmit={this.searchPlaces}>
+                            <div className="input-group">
+                                <input type="text" className="form-control search" placeholder="Enter any country or city" ref="search" />
+                                <div className="input-group-btn">
+                                    <button className="btn btn-primary btn-lg" type='submit'><i className="fa fa-search"></i></button>
+                                </div>
+                            </div >
+                        </form><br />
                         {this.state.isnotfound ? <div className='no_result'> No Results found</div> : ''}
                         <div>
                             {this.state.showplaces ? <div>
