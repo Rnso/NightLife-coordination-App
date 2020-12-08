@@ -9,6 +9,9 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: 'index.bundle.js'
     },
+    node: {
+        fs: 'empty',
+    },
     module: {
       loaders: [
           {

@@ -39,7 +39,7 @@ class App extends Component {
         let address = this.refs.search.value || sessionStorage.searchInput
         sessionStorage.searchInput = address
         if (address !== "") {
-            axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY_CODE}`)
+            axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=XXXX`)
                 .then(res => {
                     this.state.location = res.data.results[0].geometry.location
                     this.getPlaces()
@@ -65,7 +65,7 @@ class App extends Component {
             if (status === 'OK') {
                 res.map(place => {
                     let obj = {}
-                    obj.id = place.id
+                    obj.id = place.place_id
                     obj.name = place.name
                     obj.rating = place.rating
                     obj.vicinity = place.vicinity
@@ -227,7 +227,7 @@ class App extends Component {
                                         <div className='col-md-2 col-md-offset-1'>
                                             <img className='image' src={place.photo} alt={place.name} width='180' height='150' />
                                         </div>
-                                        <div className='col-md-8 pad'>
+                                        <div className='col-md-8'>
                                             <ul className='ul'><h3>{place.name}</h3>
                                                 <li>rating : &nbsp;{place.rating}</li>
                                                 <li>{place.vicinity}</li><br />
@@ -256,7 +256,7 @@ class App extends Component {
                         <div className="modal-content">
                             <div className="modal-body">
                                 <div className="btn-group"><br />
-                                    <h4>Please sign in</h4><br />
+                                    <h4>Please sign in with google account</h4><br />
                                     <button className="btn btn-default google_btn"><i className='fa fa-google google'></i></button>
                                     <button className="btn btn-primary" onClick={this.logInWithGoogle}>Sign in with Google</button><br /><br />
                                 </div>
