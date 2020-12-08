@@ -1,6 +1,4 @@
 import express from 'express'
-//import { MongoClient, ObjectID } from 'mongodb'
-import assert from 'assert'
 import moment from 'moment'
 import config from '../config'
 
@@ -17,22 +15,7 @@ client.connect((err, client) => {
     }
 })
 
-/*let mdb
-MongoClient.connect(config.mongodbUri, (err, db) => {
-    assert.equal(null, err)
-
-    mdb = db
-})*/
 const router = express.Router()
-
-/*router.get('/getallhangouts', (req, res) => {
-    let date = moment().format('L')
-    mdb.collection("hangouts").find({ createdDate: date }).toArray((err, data) => {
-        res.send(data)
-        console.log(data)
-    })
-
-})*/
 
 router.get('/getallhangouts', (req, res) => {
     let date = moment().format('L')
