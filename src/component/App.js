@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import * as constants from '../../constant.js'
-import { API_KEY_GEOCODE, API_KEY_PLACE } from '../../config.js'
+import { API_KEY_CODE } from '../../config.js'
 import axios from 'axios'
 import '../app.css'
 
@@ -39,7 +39,7 @@ class App extends Component {
         let address = this.refs.search.value || sessionStorage.searchInput
         sessionStorage.searchInput = address
         if (address !== "") {
-            axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY_GEOCODE}`)
+            axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY_CODE}`)
                 .then(res => {
                     this.state.location = res.data.results[0].geometry.location
                     this.getPlaces()
@@ -223,11 +223,11 @@ class App extends Component {
                         <div>
                             {this.state.showplaces ? <div>
                                 {this.state.placedetails.map((place, i) => {
-                                    return <div key={i} className='col-md-12'><br />
+                                    return <div key={i} className='col-md-12 border'><br />
                                         <div className='col-md-2 col-md-offset-1'>
                                             <img className='image' src={place.photo} alt={place.name} width='180' height='150' />
                                         </div>
-                                        <div className='col-md-8'>
+                                        <div className='col-md-8 pad'>
                                             <ul className='ul'><h3>{place.name}</h3>
                                                 <li>rating : &nbsp;{place.rating}</li>
                                                 <li>{place.vicinity}</li><br />
@@ -240,7 +240,7 @@ class App extends Component {
                                                     </li> :
                                                     <li><button className="btn btn-primary" onClick={this.showLoginModal}>Check-In</button></li>
                                                 }
-                                            </ul><hr />
+                                            </ul>
                                         </div>
                                     </div>
                                 })}
