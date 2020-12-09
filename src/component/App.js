@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import * as constants from '../../constant.js'
-import { API_KEY_CODE } from '../../config.js'
+import { API_KEY_CODE } from '../../constant'
 import axios from 'axios'
 import '../app.css'
 
@@ -39,7 +39,7 @@ class App extends Component {
         let address = this.refs.search.value || sessionStorage.searchInput
         sessionStorage.searchInput = address
         if (address !== "") {
-            axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=XXXX`)
+            axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY_CODE}`)
                 .then(res => {
                     this.state.location = res.data.results[0].geometry.location
                     this.getPlaces()
@@ -245,7 +245,7 @@ class App extends Component {
                                     </div>
                                 })}
                                 <div className='text-center'>
-                                    {this.state.showmore ? <button id='more_btn' className='btn btn-warning btn-block'>More...</button> : ''}
+                                    {this.state.showmore ? <button id='more_btn' className='btn btn-primary btn-block'><strong>More ...</strong></button> : ''}
                                 </div>
                             </div> : ''}
                         </div>

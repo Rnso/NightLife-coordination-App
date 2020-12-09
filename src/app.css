@@ -10,6 +10,7 @@
 .profile{
     float: right;
     color: #5cb85c;
+    padding: 10px 20px;
 }
 .no_result{
     font-size: 25px;
